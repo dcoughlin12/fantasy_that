@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
+import "./App.css";
+import NavBar from "./NavBar";
+import Home from "./components/Home/Home";
+import SigninForm from "./components/Sign-in/SigninForm";
+import SignupForm from "./components/Sign-up/SignupForm";
+import Schedule from "./components/Schedule/Schedule";
 
-function App() {
+export default function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <main>
+          {/* <NavBar /> */}
+          <section>
+            <Switch>
+              <Route exact path="/">
+                <Redirect to="/home" />
+              </Route>
+              <Route path="/home" component={() => <Home />} />
+              <Route path="/signup" component={() => <SignupForm />} />
+              <Route path="/signin" component={() => <SigninForm />} />
+              <Route path="/schedule" component={() => <Schedule />} />
+              <Route path="*">
+                <h3 className="page-not-found">404 Page Not Found</h3>
+              </Route>
+            </Switch>
+          </section>
+        </main>
+      </Router>
     </div>
   );
 }
-
-export default App;
