@@ -1,0 +1,3 @@
+1. protect against users going to .login /register etc when they are already logged in. 
+  just make a conditional to check if they are logged in.. if they are redirect to home.
+2. 
