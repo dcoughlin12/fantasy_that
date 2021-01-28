@@ -15,9 +15,10 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get("/users", (req, res) => {
+app.post("/userLogin", (req, res) => {
+  console.log("here 11111");
   fantasy_db
-    .getUsers()
+    .getUser(req.body)
     .then((response) => {
       res.status(200).send(response);
     })
@@ -27,6 +28,7 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/user", (req, res) => {
+  console.log("here in SUGNUP post");
   fantasy_db
     .createUser(req.body)
     .then((response) => {

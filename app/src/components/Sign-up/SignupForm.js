@@ -55,7 +55,8 @@ export default function SignupForm(props) {
     axios
       .post("http://localhost:3001/user", user)
       .then((result) => {
-        let newUserData = result.data[0];
+        console.log("simple result obj", result);
+        let newUserData = result.data;
         console.log("result after signup:", newUserData);
         setLoggedUser(newUserData);
         setAuth((prev) => !prev);

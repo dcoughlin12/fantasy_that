@@ -14,8 +14,11 @@ import Schedule from "./components/Schedule/Schedule";
 
 export default function App() {
   const [loggedUser, setLoggedUser] = useState(
-    JSON.parse(localStorage.getItem("user")) || ""
+    JSON.parse(localStorage.getItem("user"))
+      ? JSON.parse(localStorage.getItem("user"))
+      : ""
   );
+  console.log("LOGGED USER FROM APP::", loggedUser);
   const [auth, setAuth] = useState(loggedUser ? true : false);
 
   useEffect(() => {
@@ -49,7 +52,17 @@ export default function App() {
                   />
                 )}
               />
-              <Route path="/signin" component={() => <SigninForm />} />
+              <Route
+                path="/signin"
+                component={() => (
+                  <SigninForm
+                    loggedUser={loggedUser}
+                    auth={auth}
+                    setAuth={setAuth}
+                    setLoggedUser={setLoggedUser}
+                  />
+                )}
+              />
               <Route path="/schedule" component={() => <Schedule />} />
               <Route path="*">
                 <h3 className="page-not-found">404 Page Not Found</h3>

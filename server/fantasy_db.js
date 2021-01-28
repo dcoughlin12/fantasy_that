@@ -7,14 +7,36 @@ const pool = new Pool({
   port: 5432,
 });
 
-const getUsers = () => {
+const getUser = (body) => {
   return new Promise(function (resolve, reject) {
-    pool.query("SELECT * FROM users ORDER BY id ASC", (error, results) => {
-      if (error) {
-        reject(error);
+    const { email, password } = body;
+    console.log("body in post", body);
+    pool.query(
+      `SELECT id, first_name, last_name, email 
+              FROM users
+              WHERE email = $1 AND password = $2;
+              `,
+      [email, password],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        if (results.rows.length === 0) {
+          resolve(null);
+        } else {
+          console.log("results from back", results);
+          let userData = results.rows[0];
+          let user = {
+            id: userData.id,
+            firstName: userData.first_name,
+            lastName: userData.last_name,
+            email: userData.email,
+          };
+          console.log("user SENT :::", user);
+          resolve(user);
+        }
       }
-      resolve(results.rows);
-    });
+    );
   });
 };
 
@@ -29,37 +51,21 @@ const createUser = (body) => {
           reject(error);
         }
         let userData = results.rows[0];
+        console.log("USER DATA AFTER POST", userData);
         let user = {
           id: userData.id,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
+          firstName: userData.first_name,
+          lastName: userData.last_name,
           email: userData.email,
         };
+        console.log("USER SENT BACK", user);
         resolve(user);
       }
     );
   });
 };
 
-// const deleteUser = () => {
-//   return new Promise(function(resolve, reject) {
-//     const id = parseInt(request.params.id)
-//     pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
-//       if (error) {
-//         reject(error)
-//       }
-//       resolve(`User deleted with ID: ${id}`)
-//     })
-//   })
-// }
-
-const sayHello = function () {
-  console.log("hello");
-};
-
 module.exports = {
-  getUsers,
+  getUser,
   createUser,
-  sayHello,
-  // deleteMerchant,
 };

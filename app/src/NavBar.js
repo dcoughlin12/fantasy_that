@@ -24,7 +24,7 @@ export default function NavBar(props) {
           <div className="rightButtons">
             <Nav className="mr-auto"></Nav>
             <div className="welcomeMsg">
-              {auth && `Welcome ${loggedUser.first_name}`}
+              {auth && `Welcome ${loggedUser.firstName}`}
             </div>
             <Link to="/schedule" className="link-nav">
               Schedule

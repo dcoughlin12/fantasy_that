@@ -11,53 +11,49 @@ export default function SignInForm(props) {
   const [email, setEmail] = useState(props.email || "");
   const [password, setPassword] = useState(props.password || "");
   const [error, setError] = useState("");
-  const { setAuth, setLoggedUser, directUrl } = props;
+  const { setAuth, setLoggedUser } = props;
   let history = useHistory();
 
-  // const authenticateUser = (user) => {
-  //   if (typeof user === "object") {
-  //     setAuth((prev) => !prev);
-  //     if (urlGiven) {
-  //       history.push(urlGiven);
-  //     } else if (directUrl.includes("dashboard")) {
-  //       history.push(directUrl);
-  //     } else {
-  //       history.push("/MyPotlucks");
-  //     }
-  //   }
-  // };
+  const authenticateUser = (user) => {
+    if (typeof user === "object") {
+      setAuth((prev) => !prev);
+      history.push("/schedule");
+    }
+  };
 
-  // const validate = () => {
-  //   if (!email) {
-  //     setError("Email cannot be blank.");
-  //     return;
-  //   }
-  //   if (!email.includes("@")) {
-  //     setError("This is not a valid email.");
-  //     return;
-  //   }
-  //   if (!password) {
-  //     setError("Password cannot be blank.");
-  //     return;
-  //   }
-  //   setError("");
-  //   const user = {
-  //     email,
-  //     password,
-  //   };
-  //   axios
-  //     .post("http://localhost:3003/login", user)
-  //     .then((result) => {
-  //       console.log(result);
-  //       if (result.data === "Incorrect credentials.") {
-  //         setError(result.data);
-  //       } else {
-  //         setLoggedUser(result.data.user);
-  //         authenticateUser(result.data);
-  //       }
-  //     })
-  //     .catch((err) => console.log("THIS IS ERROR", err));
-  // };
+  const validate = () => {
+    if (!email) {
+      setError("Email cannot be blank.");
+      return;
+    }
+    if (!email.includes("@")) {
+      setError("This is not a valid email.");
+      return;
+    }
+    if (!password) {
+      setError("Password cannot be blank.");
+      return;
+    }
+    setError("");
+    const user = {
+      email,
+      password,
+    };
+    axios
+      .post("http://localhost:3001/userLogin", user)
+      .then((result) => {
+        console.log(result);
+        if (!result.data) {
+          setError("Invalid Email/Password combination.");
+        } else {
+          const newUserData = result.data;
+          console.log("abc ::::", newUserData);
+          setLoggedUser(newUserData);
+          authenticateUser(newUserData);
+        }
+      })
+      .catch((err) => console.log("THIS IS ERROR", err));
+  };
 
   return (
     <div className="authForm">
@@ -81,7 +77,7 @@ export default function SignInForm(props) {
             placeholder="Password"
           />
         </Form.Group>
-        <Button variant="primary" onClick={console.log("CLICKED")}>
+        <Button variant="primary" onClick={() => validate()}>
           Submit
         </Button>
       </Form>
