@@ -55,14 +55,12 @@ export default function SignupForm(props) {
     axios
       .post("http://localhost:3001/user", user)
       .then((result) => {
-        console.log("simple result obj", result);
         let newUserData = result.data;
-        console.log("result after signup:", newUserData);
         setLoggedUser(newUserData);
         setAuth((prev) => !prev);
         history.push("/Schedule");
       })
-      .catch((err) => console.log("ERROR ON POST", err));
+      .catch((err) => console.error("ERROR ON POST", err));
   }
 
   return (

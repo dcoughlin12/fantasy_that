@@ -6,7 +6,6 @@ import "./NavBar.scss";
 export default function NavBar(props) {
   const { auth, setAuth, loggedUser, setLoggedUser } = props;
   let history = useHistory();
-  console.log(loggedUser);
   const clearLogin = () => {
     setAuth((prev) => !prev);
     setLoggedUser("");

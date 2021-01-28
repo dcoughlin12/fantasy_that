@@ -22,21 +22,6 @@ export default class Schedule extends React.Component {
     this.getSearchResults();
   }
 
-  createUserAxios() {
-    const user = {
-      name: "TEST NAME 5",
-      email: "5TEST@email.COM",
-      password: "1",
-    };
-
-    axios
-      .post("http://localhost:3001/user", user)
-      .then((result) => {
-        console.log("RESULT", result.data);
-      })
-      .catch((err) => console.log(err));
-  }
-
   getSearchResults = () => {
     axios
       .get(
@@ -76,8 +61,6 @@ export default class Schedule extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this.createUser}>CREATE USER</button>
-        <button onClick={this.createUserAxios}>CREATE USER AXIOS</button>
         <h1>Make your Picks</h1>
         <div className="scheduleList">
           <div className="homeList">

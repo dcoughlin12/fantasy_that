@@ -42,12 +42,10 @@ export default function SignInForm(props) {
     axios
       .post("http://localhost:3001/userLogin", user)
       .then((result) => {
-        console.log(result);
         if (!result.data) {
           setError("Invalid Email/Password combination.");
         } else {
           const newUserData = result.data;
-          console.log("abc ::::", newUserData);
           setLoggedUser(newUserData);
           authenticateUser(newUserData);
         }

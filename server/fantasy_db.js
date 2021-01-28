@@ -10,7 +10,6 @@ const pool = new Pool({
 const getUser = (body) => {
   return new Promise(function (resolve, reject) {
     const { email, password } = body;
-    console.log("body in post", body);
     pool.query(
       `SELECT id, first_name, last_name, email 
               FROM users
@@ -24,7 +23,6 @@ const getUser = (body) => {
         if (results.rows.length === 0) {
           resolve(null);
         } else {
-          console.log("results from back", results);
           let userData = results.rows[0];
           let user = {
             id: userData.id,
@@ -32,7 +30,6 @@ const getUser = (body) => {
             lastName: userData.last_name,
             email: userData.email,
           };
-          console.log("user SENT :::", user);
           resolve(user);
         }
       }
@@ -51,14 +48,12 @@ const createUser = (body) => {
           reject(error);
         }
         let userData = results.rows[0];
-        console.log("USER DATA AFTER POST", userData);
         let user = {
           id: userData.id,
           firstName: userData.first_name,
           lastName: userData.last_name,
           email: userData.email,
         };
-        console.log("USER SENT BACK", user);
         resolve(user);
       }
     );

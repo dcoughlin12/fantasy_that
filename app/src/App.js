@@ -18,7 +18,6 @@ export default function App() {
       ? JSON.parse(localStorage.getItem("user"))
       : ""
   );
-  console.log("LOGGED USER FROM APP::", loggedUser);
   const [auth, setAuth] = useState(loggedUser ? true : false);
 
   useEffect(() => {
