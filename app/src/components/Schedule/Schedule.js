@@ -7,11 +7,9 @@ import axios from "axios";
 import "./Schedule.scss";
 import moment from "moment";
 
-let searchResults = null;
 let matchupList = [];
 let homeTeams = null;
 let awayTeams = null;
-let gameDayDetails = null;
 
 export default class Schedule extends React.Component {
   constructor(props) {
@@ -52,11 +50,6 @@ export default class Schedule extends React.Component {
           weekMatchups: result.data.dates,
         });
         this.buildGameDayHeader(day);
-        console.log("list of games for the week: ", result.data.dates);
-        console.log(
-          "matchups: result.data.dates[day].games",
-          result.data.dates[day].games
-        );
       })
       .catch((err) => console.log("Error on Schedule Search Response:", err));
   };
@@ -76,15 +69,22 @@ export default class Schedule extends React.Component {
     this.buildAwayTeamList(matchupList);
   };
 
+  setUserPick = (pick) => {
+    axios
+      .post(`localhost`)
+      .then((result) => {})
+      .catch((err) => console.log("Error ::::", err));
+  };
+
   buildHomeTeamList = (matchupList) => {
-    homeTeams = matchupList.map((teamNames) => {
-      return <ListGroup.Item>{teamNames[0]}</ListGroup.Item>;
+    homeTeams = matchupList.map((teamNames, i) => {
+      return <ListGroup.Item key={i}>{teamNames[0]}</ListGroup.Item>;
     });
   };
 
   buildAwayTeamList = (matchupList) => {
-    awayTeams = matchupList.map((teamNames) => {
-      return <ListGroup.Item>{teamNames[1]}</ListGroup.Item>;
+    awayTeams = matchupList.map((teamNames, i) => {
+      return <ListGroup.Item key={i}>{teamNames[1]}</ListGroup.Item>;
     });
   };
 
@@ -99,14 +99,12 @@ export default class Schedule extends React.Component {
       numOfGamesMsg = "There are no games scheduled today.";
     }
     this.setState({ gameDayHeadingMessage: numOfGamesMsg });
-    console.log("DATE", moment().add(10, "days").format("MMM Do YYYY"));
   };
 
   render() {
     return (
       <div>
         <h1>Make your Picks</h1>
-        <div>{this.state.gameDayHeadingMessage}</div>
         <div className="dayNav">
           <div>
             <a onClick={() => this.getSearchResults(0)}>Today</a>
@@ -147,6 +145,7 @@ export default class Schedule extends React.Component {
             </a>
           </div>
         </div>
+        <div>{this.state.gameDayHeadingMessage}</div>
         <div className="scheduleList">
           <div className="homeList">
             Home
