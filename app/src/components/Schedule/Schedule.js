@@ -3,7 +3,6 @@ import { useHistory, Link, useLocation } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
-import Nav from "react-bootstrap/Nav";
 import axios from "axios";
 import "./Schedule.scss";
 import moment from "moment";
@@ -12,6 +11,7 @@ let searchResults = null;
 let matchupList = [];
 let homeTeams = null;
 let awayTeams = null;
+let gameDayDetails = null;
 
 export default class Schedule extends React.Component {
   constructor(props) {
@@ -19,11 +19,14 @@ export default class Schedule extends React.Component {
     this.state = {
       matchups: null,
       day: "0",
+      daySelected: 0,
+      weekMatchups: null,
+      gameDayHeadingMessage: null,
     };
   }
 
   componentDidMount() {
-    this.getSearchResults();
+    this.getSearchResults(0);
   }
 
   // takes momentjs formatted date and converts to one the API accepts
@@ -35,17 +38,25 @@ export default class Schedule extends React.Component {
     return `${year}-${month}-${day}`;
   };
 
-  getSearchResults = () => {
+  getSearchResults = (day) => {
     const today = this.formateDate(moment().format("L"));
     const endDate = this.formateDate(moment().add(7, "days").calendar());
     axios
       .get(
-        // `https://statsapi.web.nhl.com/api/v1/schedule`
         `https://statsapi.web.nhl.com/api/v1/schedule?startDate=${today}&endDate=${endDate}`
       )
       .then((result) => {
-        this.makeSchedule(result.data.dates[0].games);
-        this.setState({ matchups: result.data.dates[0].games });
+        this.makeSchedule(result.data.dates[day].games);
+        this.setState({
+          matchups: result.data.dates[day].games,
+          weekMatchups: result.data.dates,
+        });
+        this.buildGameDayHeader(day);
+        console.log("list of games for the week: ", result.data.dates);
+        console.log(
+          "matchups: result.data.dates[day].games",
+          result.data.dates[day].games
+        );
       })
       .catch((err) => console.log("Error on Schedule Search Response:", err));
   };
@@ -77,10 +88,65 @@ export default class Schedule extends React.Component {
     });
   };
 
+  buildGameDayHeader = (day) => {
+    const gamesPerDay = this.state.weekMatchups[day].totalItems;
+    let numOfGamesMsg = "";
+    if (gamesPerDay === 1) {
+      numOfGamesMsg = `There is 1 game on this date.`;
+    } else if (gamesPerDay > 1) {
+      numOfGamesMsg = `There are ${gamesPerDay} games on this date.`;
+    } else {
+      numOfGamesMsg = "There are no games scheduled today.";
+    }
+    this.setState({ gameDayHeadingMessage: numOfGamesMsg });
+    console.log("DATE", moment().add(10, "days").format("MMM Do YYYY"));
+  };
+
   render() {
     return (
       <div>
         <h1>Make your Picks</h1>
+        <div>{this.state.gameDayHeadingMessage}</div>
+        <div className="dayNav">
+          <div>
+            <a onClick={() => this.getSearchResults(0)}>Today</a>
+          </div>
+          <div>
+            <a onClick={() => this.getSearchResults(1)}>
+              {moment().add(1, "days").format("dddd MMM Do")}
+            </a>
+          </div>
+          <div>
+            <a onClick={() => this.getSearchResults(2)}>
+              {moment().add(2, "days").format("dddd MMM Do")}
+            </a>
+          </div>
+          <div>
+            <a onClick={() => this.getSearchResults(3)}>
+              {moment().add(3, "days").format("dddd MMM Do")}
+            </a>
+          </div>
+          <div>
+            <a onClick={() => this.getSearchResults(4)}>
+              {moment().add(4, "days").format("dddd MMM Do")}
+            </a>
+          </div>
+          <div>
+            <a onClick={() => this.getSearchResults(5)}>
+              {moment().add(5, "days").format("dddd MMM Do")}
+            </a>
+          </div>
+          <div>
+            <a onClick={() => this.getSearchResults(6)}>
+              {moment().add(6, "days").format("dddd MMM Do")}
+            </a>
+          </div>
+          <div>
+            <a onClick={() => this.getSearchResults(7)}>
+              {moment().add(7, "days").format("dddd MMM Do")}
+            </a>
+          </div>
+        </div>
         <div className="scheduleList">
           <div className="homeList">
             Home
@@ -91,33 +157,6 @@ export default class Schedule extends React.Component {
             <ListGroup vertical>{awayTeams}</ListGroup>
           </div>
         </div>
-        <Nav
-          variant="pills"
-          defaultActiveKey="0"
-          onSelect={(selectedKey) => this.setState({ day: selectedKey })}
-        >
-          <Nav.Item>
-            <Nav.Link eventKey="0">Today</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="1">Day 2</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="2">Day 3</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="3">Day 4</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="4">Day 5</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="5">Day 6</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="6">Day 7</Nav.Link>
-          </Nav.Item>
-        </Nav>
       </div>
     );
   }
