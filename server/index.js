@@ -15,6 +15,7 @@ app.use(function (req, res, next) {
   next();
 });
 
+// Login/Register endpoints
 app.post("/userLogin", (req, res) => {
   fantasy_db
     .getUser(req.body)
@@ -47,6 +48,22 @@ app.delete("/user/:id", (req, res) => {
       res.status(500).send(error);
     });
 });
+
+//Picks Endpoints
+
+//Create pick
+app.post("/createPick", (req, res) => {
+  console.log("here 1");
+  fantasy_db
+    .createPick(req.body)
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
 app.listen(port, () => {
   console.log(`App running on port ${port}.`);
 });

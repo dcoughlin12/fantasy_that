@@ -9,6 +9,7 @@ CREATE TABLE users (
   email VARCHAR(60) NOT NULL
 );
 
+-- points is the points that the chosen team got on the game (2 for sat)
 CREATE TABLE picks (
   id SERIAL PRIMARY KEY NOT NULL,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -17,6 +18,7 @@ CREATE TABLE picks (
   date TIMESTAMP NOT NULL,
   points INTEGER NOT NULL
 );
+
 
 -- INSERT INTO users (name, password, email) VALUES
 -- ('Devin Coughlin', '1', 'devin@email.com' );

@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, Link, useLocation } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import axios from "axios";
-import "./Schedule.scss";
 import moment from "moment";
+import "./Schedule.scss";
 
 let matchupList = [];
 let homeTeams = null;
@@ -69,11 +66,25 @@ export default class Schedule extends React.Component {
     this.buildAwayTeamList(matchupList);
   };
 
-  setUserPick = (pick) => {
+  // will need to make a get request first to see if user already has a pick (Needs to be on mount)
+  //that should set state for a certain pick, maybe it could be an obj for the next 7 days?
+  // depending on that state, will need to determine if it is a put of post.
+  // set state with result of post/put
+
+  createPick = (pick) => {
+    const input = {
+      user_id: 1,
+      team_id: 1,
+      team_name: "devins team",
+      date: "oct 23rd",
+      points: 1,
+    };
     axios
-      .post(`localhost`)
-      .then((result) => {})
-      .catch((err) => console.log("Error ::::", err));
+      .post("http://localhost:3001/createPick", input)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => console.error("ERROR ON POST", err));
   };
 
   buildHomeTeamList = (matchupList) => {
@@ -105,6 +116,9 @@ export default class Schedule extends React.Component {
     return (
       <div>
         <h1>Make your Picks</h1>
+        <button onClick={() => this.createPick()}>
+          post for devins team to won
+        </button>
         <div className="dayNav">
           <div>
             <a onClick={() => this.getSearchResults(0)}>Today</a>

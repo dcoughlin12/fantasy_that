@@ -60,7 +60,32 @@ const createUser = (body) => {
   });
 };
 
+const createPick = (body) => {
+  return new Promise(function (resolve, reject) {
+    const { user_id, team_id, team_name, date, points } = body;
+    pool.query(
+      "INSERT INTO picks (team_id, team_name, points) VALUES ($1, $2, $3, $4) RETURNING *",
+      [user_id, team_id, team_name, points],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        // let userData = results.rows[0];
+        // let user = {
+        //   id: userData.id,
+        //   firstName: userData.first_name,
+        //   lastName: userData.last_name,
+        //   email: userData.email,
+        console.log("result of post::::::", results);
+        // }
+        resolve(results);
+      }
+    );
+  });
+};
+
 module.exports = {
   getUser,
   createUser,
+  createPick,
 };
