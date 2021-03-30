@@ -76,7 +76,7 @@ const createPick = (body) => {
         //   firstName: userData.first_name,
         //   lastName: userData.last_name,
         //   email: userData.email,
-        console.log("result of post::::::", results);
+        // console.log("result of post::::::", results);
         // }
         resolve(results);
       }

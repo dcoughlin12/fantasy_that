@@ -116,44 +116,45 @@ export default class Schedule extends React.Component {
     return (
       <div>
         <h1>Make your Picks</h1>
-        <button onClick={() => this.createPick()}>
+        {/* <button onClick={() => this.createPick()}>
           post for devins team to won
-        </button>
+        </button> */}
         <div className="dayNav">
-          <div>
+          {/* should refactor this and built the list in a loop */}
+          <div className="eachDay">
             <a onClick={() => this.getSearchResults(0)}>Today</a>
           </div>
-          <div>
+          <div className="eachDay">
             <a onClick={() => this.getSearchResults(1)}>
               {moment().add(1, "days").format("dddd MMM Do")}
             </a>
           </div>
-          <div>
+          <div className="eachDay">
             <a onClick={() => this.getSearchResults(2)}>
               {moment().add(2, "days").format("dddd MMM Do")}
             </a>
           </div>
-          <div>
+          <div className="eachDay">
             <a onClick={() => this.getSearchResults(3)}>
               {moment().add(3, "days").format("dddd MMM Do")}
             </a>
           </div>
-          <div>
+          <div className="eachDay">
             <a onClick={() => this.getSearchResults(4)}>
               {moment().add(4, "days").format("dddd MMM Do")}
             </a>
           </div>
-          <div>
+          <div className="eachDay">
             <a onClick={() => this.getSearchResults(5)}>
               {moment().add(5, "days").format("dddd MMM Do")}
             </a>
           </div>
-          <div>
+          <div className="eachDay">
             <a onClick={() => this.getSearchResults(6)}>
               {moment().add(6, "days").format("dddd MMM Do")}
             </a>
           </div>
-          <div>
+          <div className="eachDay">
             <a onClick={() => this.getSearchResults(7)}>
               {moment().add(7, "days").format("dddd MMM Do")}
             </a>
